@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const user_controller_1 = require("../controllers/user.controller");
+const userRoute = (0, express_1.Router)();
+userRoute.route("/register").post(user_controller_1.signUp);
+userRoute.route("/").get((req, res) => {
+    res.send("Welcome to Kora");
+});
+exports.default = userRoute;
