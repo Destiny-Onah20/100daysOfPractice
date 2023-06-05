@@ -7,4 +7,5 @@ userRoute.route("/register").post(user_controller_1.signUp);
 userRoute.route("/").get((req, res) => {
     res.send("Welcome to Kora");
 });
+userRoute.route("/login").post(user_controller_1.logIn);
 exports.default = userRoute;

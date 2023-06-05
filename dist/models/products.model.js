@@ -29,7 +29,7 @@ Product.init({
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
-    image: {
+    imageId: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
@@ -49,8 +49,8 @@ Product.init({
     sequelize: config_1.default,
     tableName: "products"
 });
-Product.sync().then(() => {
-    console.log("Product Table created.");
-}).catch((err) => {
-    console.log(err.message);
-});
+// Product.sync({alter: true}).then(()=>{
+//   console.log("Product Table created.");
+// }).catch((err)=>{
+//   console.log(err.message);
+// })

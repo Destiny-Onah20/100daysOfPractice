@@ -11,4 +11,12 @@ cloudinary_1.v2.config({
     api_key: process.env.CLOUD_KEY,
     api_secret: process.env.CLOUD_SEC
 });
+// const cloudSrorage = new CloudinaryStorage({
+//   Cloudinary: Cloudinary,
+//   params: {
+//     allowed_formats: async (req, file) => 'png',
+//     unique_filename: true,
+//     folder: "../uploads"
+//   }
+// })
 exports.default = cloudinary_1.v2;

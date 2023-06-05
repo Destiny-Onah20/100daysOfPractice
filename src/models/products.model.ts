@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional} from "sequelize";
 import sequelize from "../config/config";
-import ProductAttributes from "../interfaces/product.interface";
+import { ProductAttributes } from "../interfaces/product.interface";
 
 
 type productCreationAttributes = Optional<ProductAttributes, "id" | "createdAt" | "updatedAt">;
@@ -10,7 +10,7 @@ export class Product extends Model <ProductAttributes, productCreationAttributes
   public productName!: string;
   public description!: string;
   public price! : number;
-  public image!: string;
+  public imageId!: string;
   public cloudId! : string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -35,7 +35,7 @@ Product.init({
     type: DataTypes.INTEGER,
     allowNull: false
   },
-  image: {
+  imageId: {
     type: DataTypes.STRING,
     allowNull: false
   },
@@ -56,9 +56,9 @@ Product.init({
   tableName: "products"
 })
 
-Product.sync().then(()=>{
-  console.log("Product Table created.");
-}).catch((err)=>{
-  console.log(err.message);
+// Product.sync({alter: true}).then(()=>{
+//   console.log("Product Table created.");
+// }).catch((err)=>{
+//   console.log(err.message);
   
-})
+// })
