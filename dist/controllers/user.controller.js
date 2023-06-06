@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logIn = exports.signUp = void 0;
+exports.verifyUser = exports.logIn = exports.signUp = void 0;
 const user_model_1 = require("../models/user.model");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
@@ -47,8 +47,10 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         yield newUser.save();
         const verify = `${req.protocol}://${req.get("host")}/api/verify/${newUser.id}`;
         const message = `welcome cheif ${newUser.name} use this link to verify your account ${verify}`;
-        const mail = new mailService_1.default();
-        mail.mail({
+        const Sendmail = new mailService_1.default();
+        Sendmail.createConnection();
+        Sendmail.mail({
+            from: process.env.EMAIL,
             email: newUser.email,
             subject: "Kindly verify email.",
             message
@@ -86,7 +88,8 @@ const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         validEmail.token = genToken;
         yield validEmail.save();
         return res.status(200).json({
-            message: "Login Successsful."
+            message: "Login Successsful.",
+            data: validEmail
         });
     }
     catch (error) {
@@ -96,3 +99,18 @@ const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.logIn = logIn;
+const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.params.userId;
+        yield user_model_1.User.update({ status: false }, { where: { id: userId } });
+        return res.status(200).json({
+            message: "User now verified."
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+});
+exports.verifyUser = verifyUser;

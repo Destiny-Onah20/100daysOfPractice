@@ -53,8 +53,8 @@ User.init({
     sequelize: config_1.default,
     tableName: "users"
 });
-// User.sync({force: true}).then(()=>{
+// User.sync({ force: true }).then(() => {
 //   console.log("TAble created.");
-// }).catch((err)=>{
+// }).catch((err) => {
 //   console.log(err.message);
 // });

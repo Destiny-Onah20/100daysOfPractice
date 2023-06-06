@@ -1,5 +1,5 @@
 // import {  DataType, Column, Table} from "sequelize-typescript";
-import { Optional , Model, DataTypes} from "sequelize";
+import { Optional, Model, DataTypes } from "sequelize";
 import UserAttributes from "../interfaces/user.interface";
 import sequelize from "../config/config";
 
@@ -61,12 +61,12 @@ import sequelize from "../config/config";
 
 type UserCreationAttributes = Optional<UserAttributes, 'id' | "token" | "status" | "createdAt" | "updatedAt">;
 
-export class User extends Model <UserAttributes, UserCreationAttributes>{
+export class User extends Model<UserAttributes, UserCreationAttributes>{
   public id!: number;
   public name!: string;
   public email!: string;
   public status!: boolean;
-  public age! : number;
+  public age!: number;
   public token!: string;
   public password!: string;
   public readonly createdAt!: Date;
@@ -111,13 +111,13 @@ User.init({
   updatedAt: {
     type: DataTypes.DATE
   }
-},{
+}, {
   sequelize,
   tableName: "users"
 });
 
-// User.sync({force: true}).then(()=>{
+// User.sync({ force: true }).then(() => {
 //   console.log("TAble created.");
-// }).catch((err)=>{
+// }).catch((err) => {
 //   console.log(err.message);
 // });

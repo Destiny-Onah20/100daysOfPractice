@@ -5,7 +5,7 @@ import { multerUpload } from "../middlewares/multer";
 
 const productRoute = Router();
 
-productRoute.route("/create/:userId").post( Authenticate,  createProducts)
+productRoute.route("/create/:userId").post(Authenticate, createProducts)
 
 
 export default productRoute;

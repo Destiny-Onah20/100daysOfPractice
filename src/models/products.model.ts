@@ -10,7 +10,7 @@ export class Product extends Model <ProductAttributes, productCreationAttributes
   public productName!: string;
   public description!: string;
   public price! : number;
-  public imageId!: string;
+  public file!: string;
   public cloudId! : string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;

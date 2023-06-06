@@ -8,4 +8,5 @@ userRoute.route("/").get((req, res) => {
     res.send("Welcome to Kora");
 });
 userRoute.route("/login").post(user_controller_1.logIn);
+userRoute.route("/verify/:userId").post(user_controller_1.verifyUser);
 exports.default = userRoute;

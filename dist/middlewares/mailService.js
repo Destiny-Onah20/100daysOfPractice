@@ -16,8 +16,6 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 class mailSender {
-    // public constructor(){
-    // }
     static getInstance() {
         if (!mailSender.instance) {
             mailSender.instance = new mailSender();
@@ -35,17 +33,31 @@ class mailSender {
                     pass: process.env.PASSWORD
                 }
             });
+            try {
+                yield this.transporter.verify();
+                // console.log("MailSender connection established successfully.");
+            }
+            catch (error) {
+                // console.error("Error establishing MailSender connection:", error);
+            }
         });
     }
+    ;
     mail(Option) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.transporter.sendMail({
+            const mailOption = {
                 from: process.env.EMAIL,
                 to: Option.email,
                 subject: Option.subject,
-                text: Option.text
-            });
+                text: Option.message
+            };
+            console.log(mailOption);
+            const result = yield this.transporter.sendMail(mailOption);
+            console.log(result);
         });
+    }
+    getTransporter() {
+        return this.transporter;
     }
 }
 exports.default = mailSender;

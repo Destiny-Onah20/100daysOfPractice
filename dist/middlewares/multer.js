@@ -26,4 +26,4 @@ const fileFilter = (req, file, callback) => {
 exports.multerUpload = (0, multer_1.default)({
     storage: fileStorage,
     fileFilter: fileFilter
-}).single("imageId");
+}).single("file");
