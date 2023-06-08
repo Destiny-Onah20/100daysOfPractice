@@ -29,7 +29,8 @@
     "mysql2": "^3.3.3",
     "nodemailer": "^6.9.3",
     "sequelize": "^6.31.1",
-    "sequelize-typescript": "^2.1.5"
+    "sequelize-typescript": "^2.1.5",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/nodemailer": "^6.4.8"

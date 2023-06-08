@@ -4,7 +4,6 @@ dotenv.config()
 import { RequestHandler, Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
-import { where } from "sequelize";
 import mailSender from "../middlewares/mailService";
 
 
@@ -102,6 +101,34 @@ export const verifyUser: RequestHandler = async (req, res) => {
     return res.status(200).json({
       message: "User now verified."
     })
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message
+    })
+  }
+};
+
+
+export const changePassword: RequestHandler = async (req, res): Promise<any> => {
+  try {
+    const { email } = req.body;
+    const checkEmailExists = await User.findOne({ where: { email: email } });
+    if (!checkEmailExists) {
+      return res.status(404).json({
+        message: "Email does not eists."
+      })
+    } else {
+      const verify = `${req.protocol}://${req.get("host")}/api/change/${checkEmailExists.id}`;
+      const message = `Hello cheif ${checkEmailExists.name} Kindly use the link to change your password  ${verify}`;
+      const Sendmail = new mailSender();
+      Sendmail.createConnection()
+      Sendmail.mail({
+        from: process.env.EMAIL,
+        email: checkEmailExists.email,
+        subject: "Kindly verify email.",
+        message
+      })
+    }
   } catch (error: any) {
     return res.status(500).json({
       message: error.message

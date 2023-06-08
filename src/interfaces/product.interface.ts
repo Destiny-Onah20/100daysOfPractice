@@ -15,6 +15,6 @@ export interface productDataInterface {
   productName: string;
   description: string;
   price: number;
-  imageId: string | undefined;
+  imageId: string;
   cloudId: string;
 }

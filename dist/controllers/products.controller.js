@@ -17,18 +17,21 @@ const cloudinary_1 = __importDefault(require("../middlewares/cloudinary"));
 const products_model_1 = require("../models/products.model");
 const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { productName, description, price, imageId, cloudId } = req.body;
-        console.log(req.body);
-        if (!req.file) {
+        const { productName, description, price } = req.body;
+        // console.log(req.files);
+        if (!req.files) {
             throw new Error('No file uploaded');
         }
-        const result = yield cloudinary_1.default.uploader.upload(req.file.path);
+        console.log(req.files.imageId);
+        const result = yield cloudinary_1.default.uploader.upload(req.files.imageId.tempFilePath);
+        const { secure_url: imageId, public_id: cloudId } = result;
+        // console.log(imageId);
         const data = {
             productName,
             description,
             price,
-            imageId: result.secure_url,
-            cloudId: result.public_id,
+            imageId,
+            cloudId
         };
         const postProduct = yield products_model_1.Product.create(data);
         res.status(201).json({

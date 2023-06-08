@@ -5,20 +5,25 @@ import { Product } from '../models/products.model';
 
 export const createProducts: RequestHandler = async (req, res) => {
   try {
-    const { productName, description, price, imageId, cloudId } = req.body;
-    console.log(req.body);
+    const { productName, description, price } = req.body;
+    // console.log(req.files);
 
-    if (!req.file) {
+    if (!req.files) {
       throw new Error('No file uploaded');
     }
-    const result = await Cloudinary.uploader.upload(req.file.path);
+    console.log(req.files.imageId);
+
+    const result = await Cloudinary.uploader.upload(req.files.imageId.tempFilePath)
+    const { secure_url: imageId, public_id: cloudId } = result;
+    // console.log(imageId);
+
 
     const data: productDataInterface = {
       productName,
       description,
       price,
-      imageId: result.secure_url,
-      cloudId: result.public_id,
+      imageId,
+      cloudId
     };
 
     const postProduct = await Product.create(data);

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyUser = exports.logIn = exports.signUp = void 0;
+exports.changePassword = exports.verifyUser = exports.logIn = exports.signUp = void 0;
 const user_model_1 = require("../models/user.model");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
@@ -114,3 +114,32 @@ const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.verifyUser = verifyUser;
+const changePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email } = req.body;
+        const checkEmailExists = yield user_model_1.User.findOne({ where: { email: email } });
+        if (!checkEmailExists) {
+            return res.status(404).json({
+                message: "Email does not eists."
+            });
+        }
+        else {
+            const verify = `${req.protocol}://${req.get("host")}/api/change/${checkEmailExists.id}`;
+            const message = `Hello cheif ${checkEmailExists.name} Kindly use the link to change your password  ${verify}`;
+            const Sendmail = new mailService_1.default();
+            Sendmail.createConnection();
+            Sendmail.mail({
+                from: process.env.EMAIL,
+                email: checkEmailExists.email,
+                subject: "Kindly verify email.",
+                message
+            });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+});
+exports.changePassword = changePassword;
