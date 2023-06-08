@@ -33,6 +33,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@types/nodemailer": "^6.4.8"
+    "@types/nodemailer": "^6.4.8",
+    "nodemon": "^2.0.22"
   }
 }
