@@ -1,8 +1,8 @@
 FROM node:16
 
-RUN mkdir /app
+RUN mkdir /server
 
-WORKDIR /app
+WORKDIR /server
 
 ARG PORT
 ENV PORT $PORT
