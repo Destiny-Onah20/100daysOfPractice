@@ -15,8 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createProducts = void 0;
 const cloudinary_1 = __importDefault(require("../middlewares/cloudinary"));
 const products_model_1 = require("../models/products.model");
+const user_model_1 = __importDefault(require("../models/user.model"));
 const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const userId = req.params.userId;
+        const user = yield user_model_1.default.findAll({ where: { id: userId } });
         const { productName, description, price } = req.body;
         // console.log(req.files);
         if (!req.files) {
@@ -31,7 +34,8 @@ const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
             description,
             price,
             imageId,
-            cloudId
+            cloudId,
+            userId: user[0].id
         };
         const postProduct = yield products_model_1.Product.create(data);
         res.status(201).json({

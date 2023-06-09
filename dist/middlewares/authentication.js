@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Authenticate = void 0;
-const user_model_1 = require("../models/user.model");
+const user_model_1 = __importDefault(require("../models/user.model"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
@@ -21,7 +21,7 @@ const Authenticate = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     var _a;
     try {
         const userId = req.params.userId;
-        const findUser = yield user_model_1.User.findAll({ where: { id: userId } });
+        const findUser = yield user_model_1.default.findAll({ where: { id: userId } });
         if (!findUser) {
             return res.status(409).json({
                 message: "Not authorized."

@@ -1,19 +1,26 @@
-import { Model, DataTypes, Optional} from "sequelize";
+import { Model, DataTypes, Optional, BelongsToGetAssociationMixin } from "sequelize";
 import sequelize from "../config/config";
 import { ProductAttributes } from "../interfaces/product.interface";
+import User from "./user.model";
 
 
 type productCreationAttributes = Optional<ProductAttributes, "id" | "createdAt" | "updatedAt">;
 
-export class Product extends Model <ProductAttributes, productCreationAttributes> {
+export class Product extends Model<ProductAttributes, productCreationAttributes> {
   public id!: string;
   public productName!: string;
   public description!: string;
-  public price! : number;
+  public price!: number;
   public file!: string;
-  public cloudId! : string;
+  public cloudId!: string;
+  public userId!: number;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  public getUser!: BelongsToGetAssociationMixin<User>;
+  public static associate(models: { User: typeof User }): void {
+    Product.belongsTo(models.User, { foreignKey: "userId" })
+  }
 };
 
 Product.init({
@@ -43,6 +50,14 @@ Product.init({
     type: DataTypes.STRING,
     allowNull: false
   },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: "users",
+      key: "id"
+    }
+  },
   createdAt: {
     type: DataTypes.DATE,
     allowNull: false
@@ -51,14 +66,16 @@ Product.init({
     type: DataTypes.DATE,
     allowNull: false
   },
-},{
+}, {
   sequelize,
   tableName: "products"
-})
+});
 
-// Product.sync({alter: true}).then(()=>{
-//   console.log("Product Table created.");
-// }).catch((err)=>{
-//   console.log(err.message);
-  
-// })
+Product.associate({ User })
+
+Product.sync().then(() => {
+  console.log("Product Table created.");
+}).catch((err) => {
+  console.log(err.message);
+
+})

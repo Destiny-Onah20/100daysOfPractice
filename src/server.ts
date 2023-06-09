@@ -7,12 +7,12 @@ import app from "./app";
 
 const port = process.env.PORT;
 
-sequelize.authenticate().then(()=>{
+sequelize.authenticate().then(() => {
   console.log("Database connected");
-}).then(()=>{
-  app.listen(port, ()=>{
+}).then(() => {
+  app.listen(port, () => {
     console.log(`Listening to port: ${port}`);
   })
-}).catch((err)=>{
+}).catch((err) => {
   console.log(err.message)
-})
+});

@@ -2,9 +2,12 @@ import { RequestHandler } from 'express';
 import Cloudinary from '../middlewares/cloudinary';
 import { productDataInterface } from '../interfaces/product.interface';
 import { Product } from '../models/products.model';
+import User from '../models/user.model';
 
 export const createProducts: RequestHandler = async (req, res) => {
   try {
+    const userId = req.params.userId;
+    const user = await User.findAll({ where: { id: userId } })
     const { productName, description, price } = req.body;
     // console.log(req.files);
 
@@ -23,7 +26,8 @@ export const createProducts: RequestHandler = async (req, res) => {
       description,
       price,
       imageId,
-      cloudId
+      cloudId,
+      userId: user[0].id
     };
 
     const postProduct = await Product.create(data);

@@ -3,13 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
 // import {  DataType, Column, Table} from "sequelize-typescript";
 const sequelize_1 = require("sequelize");
 const config_1 = __importDefault(require("../config/config"));
+const products_model_1 = require("./products.model");
 class User extends sequelize_1.Model {
+    static associate(models) {
+        User.hasMany(models.Product, { foreignKey: "userId" });
+    }
 }
-exports.User = User;
 ;
 User.init({
     id: {
@@ -53,8 +55,10 @@ User.init({
     sequelize: config_1.default,
     tableName: "users"
 });
-// User.sync({ force: true }).then(() => {
-//   console.log("TAble created.");
-// }).catch((err) => {
-//   console.log(err.message);
-// });
+User.associate({ Product: products_model_1.Product });
+User.sync({ force: true }).then(() => {
+    console.log("TAble created.");
+}).catch((err) => {
+    console.log(err.message);
+});
+exports.default = User;

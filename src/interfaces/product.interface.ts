@@ -5,7 +5,8 @@ export interface ProductAttributes {
   price: number;
   imageId: string | undefined;
   cloudId: string;
-  createdAt: Date,
+  userId: number;
+  createdAt: Date;
   updatedAt: Date
 };
 
@@ -17,4 +18,5 @@ export interface productDataInterface {
   price: number;
   imageId: string;
   cloudId: string;
+  userId: number;
 }

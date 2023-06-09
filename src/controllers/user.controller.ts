@@ -1,4 +1,4 @@
-import { User } from "../models/user.model";
+import User from "../models/user.model";
 import dotenv from "dotenv";
 dotenv.config()
 import { RequestHandler, Request, Response, NextFunction } from "express";

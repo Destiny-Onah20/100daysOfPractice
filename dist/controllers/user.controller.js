@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.changePassword = exports.verifyUser = exports.logIn = exports.signUp = void 0;
-const user_model_1 = require("../models/user.model");
+const user_model_1 = __importDefault(require("../models/user.model"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -23,7 +23,7 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, age, email, password } = req.body;
         // check if the user Exists
-        const checkEmail = yield user_model_1.User.findOne({ where: { email: email } });
+        const checkEmail = yield user_model_1.default.findOne({ where: { email: email } });
         if (checkEmail) {
             return res.status(409).json({
                 message: "Email already Exists"
@@ -38,7 +38,7 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             email,
             password: hashedPassword
         };
-        const newUser = new user_model_1.User(data);
+        const newUser = new user_model_1.default(data);
         const genToken = jsonwebtoken_1.default.sign({
             name: newUser.name,
             id: newUser.id
@@ -69,7 +69,7 @@ exports.signUp = signUp;
 const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
-        const validEmail = yield user_model_1.User.findOne({ where: { email } });
+        const validEmail = yield user_model_1.default.findOne({ where: { email } });
         if (!validEmail) {
             return res.status(404).json({
                 message: "Email does not exists."
@@ -102,7 +102,7 @@ exports.logIn = logIn;
 const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
-        yield user_model_1.User.update({ status: false }, { where: { id: userId } });
+        yield user_model_1.default.update({ status: false }, { where: { id: userId } });
         return res.status(200).json({
             message: "User now verified."
         });
@@ -117,7 +117,7 @@ exports.verifyUser = verifyUser;
 const changePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email } = req.body;
-        const checkEmailExists = yield user_model_1.User.findOne({ where: { email: email } });
+        const checkEmailExists = yield user_model_1.default.findOne({ where: { email: email } });
         if (!checkEmailExists) {
             return res.status(404).json({
                 message: "Email does not eists."

@@ -6,7 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Product = void 0;
 const sequelize_1 = require("sequelize");
 const config_1 = __importDefault(require("../config/config"));
+const user_model_1 = __importDefault(require("./user.model"));
 class Product extends sequelize_1.Model {
+    static associate(models) {
+        Product.belongsTo(models.User, { foreignKey: "userId" });
+    }
 }
 exports.Product = Product;
 ;
@@ -37,6 +41,14 @@ Product.init({
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
+    userId: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: "users",
+            key: "id"
+        }
+    },
     createdAt: {
         type: sequelize_1.DataTypes.DATE,
         allowNull: false
@@ -49,8 +61,9 @@ Product.init({
     sequelize: config_1.default,
     tableName: "products"
 });
-// Product.sync({alter: true}).then(()=>{
-//   console.log("Product Table created.");
-// }).catch((err)=>{
-//   console.log(err.message);
-// })
+Product.associate({ User: user_model_1.default });
+Product.sync().then(() => {
+    console.log("Product Table created.");
+}).catch((err) => {
+    console.log(err.message);
+});

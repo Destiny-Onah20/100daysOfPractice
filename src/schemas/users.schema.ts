@@ -1,6 +1,7 @@
 import { number, object, string } from "zod";
 
-export const userSchema = object({
+
+const userSchema = object({
   body: object({
     name: string({
       required_error: "Name is required."
@@ -16,3 +17,5 @@ export const userSchema = object({
     required_error: "age is required."
   })
 });
+
+export default userSchema;

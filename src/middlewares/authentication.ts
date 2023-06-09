@@ -1,4 +1,4 @@
-import { User } from "../models/user.model";
+import User from "../models/user.model";
 import { RequestHandler } from "express";
 import Jwt from "jsonwebtoken";
 import dotenv from "dotenv"
