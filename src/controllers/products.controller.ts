@@ -1,12 +1,13 @@
-import { RequestHandler } from 'express';
+import { RequestHandler, Request, Response } from 'express';
 import Cloudinary from '../middlewares/cloudinary';
 import { productDataInterface } from '../interfaces/product.interface';
-import { Product } from '../models/products.model';
+import Product from '../models/products.model';
 import User from '../models/user.model';
+import { productInput } from '../schemas/product.schema';
 
-export const createProducts: RequestHandler = async (req, res) => {
+export const createProducts = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.params.userid;
     const user = await User.findAll({ where: { id: userId } })
     const { productName, description, price } = req.body;
     // console.log(req.files);
@@ -18,8 +19,6 @@ export const createProducts: RequestHandler = async (req, res) => {
 
     const result = await Cloudinary.uploader.upload(req.files.imageId.tempFilePath)
     const { secure_url: imageId, public_id: cloudId } = result;
-    // console.log(imageId);
-
 
     const data: productDataInterface = {
       productName,

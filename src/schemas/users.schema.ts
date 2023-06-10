@@ -1,7 +1,7 @@
-import { number, object, string } from "zod";
+import { TypeOf, number, object, string, z } from "zod";
 
 
-const userSchema = object({
+export const userSchema = object({
   body: object({
     name: string({
       required_error: "Name is required."
@@ -12,10 +12,7 @@ const userSchema = object({
   }),
   password: string({
     required_error: "Password is required."
-  }),
-  age: number({
-    required_error: "age is required."
-  })
+  }).min(6),
 });
 
-export default userSchema;
+export type userInput = z.infer<typeof userSchema>

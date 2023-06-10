@@ -12,13 +12,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Authenticate = void 0;
+exports.authAccess = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const Authenticate = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+// export const Authenticate: RequestHandler = async (req, res, next) => {
+//   try {
+//     const userId = req.params.userId;
+//     const findUser = await User.findAll({ where: { id: userId } });
+//     if (!findUser) {
+//       return res.status(401).json({
+//         message: "Not authorized."
+//       })
+//     }
+//     const userToken = req.headers.authorization?.split(" ")[1];
+//     if (userToken) {
+//       Jwt.verify(userToken, "process.env.TOKEN_SEC", (error, payLoad) => {
+//         if (error) {
+//           res.status(401).json({
+//             message: "You not authorized."
+//           })
+//         } else {
+//           res.locals.jwt = payLoad;
+//           next();
+//         }
+//       })
+//     } else {
+//       res.status(401).json({
+//         message: "Unauthorized."
+//       })
+//     }
+//   } catch (error) {
+//     return res.status(500).json({
+//       message: error
+//     })
+//   }
+// }
+const authAccess = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
         const findUser = yield user_model_1.default.findAll({ where: { id: userId } });
@@ -27,9 +58,15 @@ const Authenticate = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
                 message: "Not authorized."
             });
         }
-        const userToken = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
-        if (userToken) {
-            jsonwebtoken_1.default.verify(userToken, "process.env.TOKEN_SEC", (error, payLoad) => {
+        ;
+        const authToken = findUser[0].token;
+        if (!authToken) {
+            return res.status(401).json({
+                message: "Not authorized."
+            });
+        }
+        else {
+            jsonwebtoken_1.default.verify(authToken, "process.env.TOKEN_SEC", (error, payLoad) => {
                 if (error) {
                     res.status(401).json({
                         message: "You not authorized."
@@ -41,16 +78,11 @@ const Authenticate = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
                 }
             });
         }
-        else {
-            res.status(400).json({
-                message: "Unauthorized."
-            });
-        }
     }
     catch (error) {
         return res.status(500).json({
-            message: error
+            message: error.message
         });
     }
 });
-exports.Authenticate = Authenticate;
+exports.authAccess = authAccess;

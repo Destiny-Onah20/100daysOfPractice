@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import { mailInterface } from "../interfaces/mailInterface";
+import hdb from "express-handlebars";
 dotenv.config();
 
 

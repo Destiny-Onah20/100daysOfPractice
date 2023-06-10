@@ -5,9 +5,10 @@ import { RequestHandler, Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 import mailSender from "../middlewares/mailService";
+import { userInput } from "../schemas/users.schema";
 
 
-export const signUp = async (req: Request, res: Response) => {
+export const signUp = async (req: Request<{}, userInput["body"]>, res: Response) => {
   try {
     const { name, age, email, password } = req.body;
 
@@ -109,7 +110,7 @@ export const verifyUser: RequestHandler = async (req, res) => {
 };
 
 
-export const changePassword: RequestHandler = async (req, res): Promise<any> => {
+export const forgetPassword: RequestHandler = async (req, res): Promise<any> => {
   try {
     const { email } = req.body;
     const checkEmailExists = await User.findOne({ where: { email: email } });
@@ -129,6 +130,22 @@ export const changePassword: RequestHandler = async (req, res): Promise<any> => 
         message
       })
     }
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message
+    })
+  }
+};
+
+export const changePassword: RequestHandler = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const { password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.update({ password: hashedPassword }, { where: { id: userId } });
+    return res.status(200).json({
+      message: "Password changed successfully."
+    })
   } catch (error: any) {
     return res.status(500).json({
       message: error.message

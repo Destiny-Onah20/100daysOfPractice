@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    h2{
+      color: blue;
+    };
+    p{
+      color: rgba(0, 0, 0, 0.52);
+    }
+    a{
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      background-color: blue;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h2>Welcome to This E-commerce website</h2>
+  <p>Use this button to verify your account </p>
+  <a href="${req.protocol}://${req.get("host")}/api/verify/${newUser.id}">Click</a>
+</body>
+</html>

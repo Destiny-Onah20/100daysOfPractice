@@ -14,11 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createProducts = void 0;
 const cloudinary_1 = __importDefault(require("../middlewares/cloudinary"));
-const products_model_1 = require("../models/products.model");
+const products_model_1 = __importDefault(require("../models/products.model"));
 const user_model_1 = __importDefault(require("../models/user.model"));
 const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userId = req.params.userId;
+        const userId = req.params.userid;
         const user = yield user_model_1.default.findAll({ where: { id: userId } });
         const { productName, description, price } = req.body;
         // console.log(req.files);
@@ -28,7 +28,6 @@ const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
         console.log(req.files.imageId);
         const result = yield cloudinary_1.default.uploader.upload(req.files.imageId.tempFilePath);
         const { secure_url: imageId, public_id: cloudId } = result;
-        // console.log(imageId);
         const data = {
             productName,
             description,
@@ -37,7 +36,7 @@ const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
             cloudId,
             userId: user[0].id
         };
-        const postProduct = yield products_model_1.Product.create(data);
+        const postProduct = yield products_model_1.default.create(data);
         res.status(201).json({
             message: 'Product posted.',
             data: postProduct,

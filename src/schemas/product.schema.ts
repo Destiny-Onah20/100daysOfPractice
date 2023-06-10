@@ -1,7 +1,7 @@
-import { number, object, string } from "zod";
+import { number, object, string, z } from "zod";
 
 
-const productSchema = object({
+export const productSchema = object({
   body: object({
     productName: string({
       required_error: "This field should not be empty."
@@ -10,9 +10,11 @@ const productSchema = object({
       required_error: "This field should not be empty."
     }),
     price: number({
-      // required_error: "This field should not be empty.",
+      required_error: "This field should not be empty.",
       invalid_type_error: "must be a number"
-    })
+    }),
+    userid: number()
   })
 });
-export default productSchema;
+
+export type productInput = z.infer<typeof productSchema>;
