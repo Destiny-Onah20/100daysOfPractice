@@ -19,14 +19,16 @@ const user_model_1 = __importDefault(require("../models/user.model"));
 const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userid;
-        const user = yield user_model_1.default.findAll({ where: { id: userId } });
+        const theUser = yield user_model_1.default.findAll({ where: { id: userId } });
         const { productName, description, price } = req.body;
         // console.log(req.files);
         if (!req.files) {
             throw new Error('No file uploaded');
         }
         console.log(req.files.imageId);
-        const result = yield cloudinary_1.default.uploader.upload(req.files.imageId.tempFilePath);
+        const files = req.files.imageId;
+        const file = files[0];
+        const result = yield cloudinary_1.default.uploader.upload(file.tempFilePath);
         const { secure_url: imageId, public_id: cloudId } = result;
         const data = {
             productName,
@@ -34,7 +36,7 @@ const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
             price,
             imageId,
             cloudId,
-            userId: user[0].id
+            userId: theUser[0].id
         };
         const postProduct = yield products_model_1.default.create(data);
         res.status(201).json({

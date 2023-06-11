@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { changePassword, logIn, signUp, verifyUser } from "../controllers/user.controller";
+import { changePassword, forgetPassword, logIn, signUp, verifyUser } from "../controllers/user.controller";
 import { validate } from "../middlewares/validation";
 import { userSchema } from "../schemas/users.schema";
 
@@ -11,6 +11,6 @@ userRoute.route("/").get((req: Request, res: Response) => {
 });
 userRoute.route("/login").post(logIn);
 userRoute.route("/verify/:userId").post(verifyUser);
-userRoute.route("forgot").post(changePassword)
+userRoute.route("forgot").post(forgetPassword)
 
 export default userRoute;

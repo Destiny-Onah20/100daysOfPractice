@@ -5,64 +5,59 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const config_1 = __importDefault(require("../config/config"));
-const user_model_1 = __importDefault(require("./user.model"));
 class Product extends sequelize_1.Model {
-    static associate(model) {
-        Product.belongsTo(model.User, { foreignKey: "userId" });
-    }
 }
-;
 Product.init({
     id: {
         type: sequelize_1.DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
     },
     productName: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     description: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     price: {
         type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
     },
     imageId: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     cloudId: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     userId: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: "users",
-            key: "id"
-        }
+            key: "id",
+        },
     },
     createdAt: {
         type: sequelize_1.DataTypes.DATE,
-        allowNull: false
+        allowNull: false,
     },
     updatedAt: {
         type: sequelize_1.DataTypes.DATE,
-        allowNull: false
+        allowNull: false,
     },
 }, {
     sequelize: config_1.default,
-    tableName: "products"
+    tableName: "products",
 });
-Product.associate({ User: user_model_1.default });
-// Product.sync({ force: true }).then(() => {
-//   console.log("Product Table created.");
-// }).catch((err) => {
-//   console.log(err.message);
-// })
+// Product.associate({ User }); // Pass the User model to the associate method
+Product.sync({ force: true }).then(() => {
+    console.log("Table created.");
+}).catch((err) => {
+    console.log(err.message);
+});
 exports.default = Product;

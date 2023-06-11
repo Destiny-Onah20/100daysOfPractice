@@ -11,5 +11,5 @@ userRoute.route("/").get((req, res) => {
 });
 userRoute.route("/login").post(user_controller_1.logIn);
 userRoute.route("/verify/:userId").post(user_controller_1.verifyUser);
-userRoute.route("forgot").post(user_controller_1.changePassword);
+userRoute.route("forgot").post(user_controller_1.forgetPassword);
 exports.default = userRoute;

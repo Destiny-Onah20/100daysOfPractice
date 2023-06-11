@@ -151,4 +151,4 @@ export const changePassword: RequestHandler = async (req, res) => {
       message: error.message
     })
   }
-}
+};

@@ -1,5 +1,4 @@
-import { Sequelize } from "sequelize-typescript";
-import User from "../models/user.model";
+import { Sequelize } from "sequelize";
 
 
 const sequelize = new Sequelize({

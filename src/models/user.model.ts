@@ -1,8 +1,7 @@
-// import {  DataType, Column, Table} from "sequelize-typescript";
+import Product from "./products.model";
 import { Optional, Model, DataTypes, HasManyAddAssociationMixin, HasManyGetAssociationsMixin, Sequelize } from "sequelize";
 import UserAttributes from "../interfaces/user.interface";
 import sequelize from "../config/config";
-import Product from "./products.model";
 
 
 
@@ -20,8 +19,8 @@ class User extends Model<UserAttributes, UserCreationAttributes>{
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  public getProducts!: HasManyGetAssociationsMixin<Product>;
-  public addProduct!: HasManyAddAssociationMixin<Product, "id">;
+  public getProducts!: HasManyGetAssociationsMixin<typeof Product>;
+  public addProduct!: HasManyAddAssociationMixin<typeof Product, "id">;
 
   public static associate(model: { Product: typeof Product }): void {
     User.hasMany(model.Product, { foreignKey: "userId" })
@@ -73,10 +72,10 @@ User.init({
 
 User.associate({ Product });
 
-// User.sync({ force: true }).then(() => {
-//   console.log("TAble created.");
-// }).catch((err) => {
-//   console.log(err.message);
-// });
+User.sync({ force: true }).then(() => {
+  console.log("TAble created.");
+}).catch((err) => {
+  console.log(err.message);
+});
 
 export default User;
