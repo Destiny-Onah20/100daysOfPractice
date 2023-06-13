@@ -53,7 +53,6 @@ class mailSender {
             };
             console.log(mailOption);
             const result = yield this.transporter.sendMail(mailOption);
-            console.log(result);
         });
     }
     getTransporter() {

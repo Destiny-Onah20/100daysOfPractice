@@ -5,7 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const config_1 = __importDefault(require("../config/config"));
+const user_model_1 = __importDefault(require("./user.model"));
 class Product extends sequelize_1.Model {
+    static associate(models) {
+        Product.belongsTo(models.User, { as: "products", foreignKey: "userId" });
+    }
 }
 Product.init({
     id: {
@@ -54,10 +58,10 @@ Product.init({
     sequelize: config_1.default,
     tableName: "products",
 });
-// Product.associate({ User }); // Pass the User model to the associate method
-Product.sync({ force: true }).then(() => {
-    console.log("Table created.");
-}).catch((err) => {
-    console.log(err.message);
-});
+Product.associate({ User: user_model_1.default });
+// Product.sync({ force: true }).then(() => {
+//   console.log("Table created.");
+// }).catch((err) => {
+//   console.log(err.message);
+// })
 exports.default = Product;

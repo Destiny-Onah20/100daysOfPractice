@@ -7,8 +7,12 @@ const products_model_1 = __importDefault(require("./products.model"));
 const sequelize_1 = require("sequelize");
 const config_1 = __importDefault(require("../config/config"));
 class User extends sequelize_1.Model {
-    static associate(model) {
-        User.hasMany(model.Product, { foreignKey: "userId" });
+    static associate(models) {
+        User.hasMany(models.Product, { foreignKey: "userId" });
+    }
+    ;
+    constructor(values, option) {
+        super(values, Object.assign(Object.assign({}, option), { sequelize: config_1.default }));
     }
 }
 ;
@@ -55,9 +59,9 @@ User.init({
     tableName: "users"
 });
 User.associate({ Product: products_model_1.default });
-User.sync({ force: true }).then(() => {
-    console.log("TAble created.");
-}).catch((err) => {
-    console.log(err.message);
-});
+// User.sync({ force: true }).then(() => {
+//   console.log("TAble created.");
+// }).catch((err) => {
+//   console.log(err.message);
+// });
 exports.default = User;

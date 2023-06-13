@@ -1,19 +1,43 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate = void 0;
-const validate = (schema) => (req, res, next) => {
+exports.validateLogin = exports.validates = void 0;
+const zod_1 = require("zod");
+const schemaObj = zod_1.z.object({
+    body: zod_1.z.object({}),
+    query: zod_1.z.object({}),
+    params: zod_1.z.object({}),
+});
+const validates = (schema) => (req, res, next) => {
     try {
-        schema.parse({
+        schemaObj.parse({
             body: req.body,
+            query: req.query,
             params: req.params,
-            query: req.query
         });
+        schema.parse(req.body);
         next();
     }
     catch (error) {
-        return res.status(500).json({
-            message: error.message
+        return res.status(400).json({
+            message: error.message,
         });
     }
 };
-exports.validate = validate;
+exports.validates = validates;
+const validateLogin = (schema) => (req, res, next) => {
+    try {
+        schemaObj.parse({
+            body: req.body,
+            query: req.query,
+            params: req.params,
+        });
+        schema.parse(req.body);
+        next();
+    }
+    catch (error) {
+        return res.status(400).json({
+            message: error.message,
+        });
+    }
+};
+exports.validateLogin = validateLogin;

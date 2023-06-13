@@ -41,7 +41,6 @@ export default class mailSender {
     }
     console.log(mailOption);
     const result = await this.transporter.sendMail(mailOption);
-    console.log(result);
 
   }
   getTransporter() {

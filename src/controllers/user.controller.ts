@@ -5,10 +5,9 @@ import { RequestHandler, Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 import mailSender from "../middlewares/mailService";
-import { userInput } from "../schemas/users.schema";
 
 
-export const signUp = async (req: Request<{}, userInput["body"]>, res: Response) => {
+export const signUp = async (req: Request, res: Response) => {
   try {
     const { name, age, email, password } = req.body;
 

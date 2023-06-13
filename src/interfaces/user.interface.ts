@@ -8,6 +8,6 @@ type UserAttributes = {
   password: string,
   createdAt: Date,
   updatedAt: Date
-}; 
+};
 
 export default UserAttributes;

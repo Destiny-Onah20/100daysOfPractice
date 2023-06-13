@@ -1,9 +1,7 @@
 import Product from "./products.model";
-import { Optional, Model, DataTypes, HasManyAddAssociationMixin, HasManyGetAssociationsMixin, Sequelize } from "sequelize";
+import { Optional, Model, DataTypes, HasManyAddAssociationMixin, HasManyGetAssociationsMixin } from "sequelize";
 import UserAttributes from "../interfaces/user.interface";
 import sequelize from "../config/config";
-
-
 
 
 type UserCreationAttributes = Optional<UserAttributes, 'id' | "token" | "status" | "createdAt" | "updatedAt">;
@@ -19,11 +17,15 @@ class User extends Model<UserAttributes, UserCreationAttributes>{
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  public getProducts!: HasManyGetAssociationsMixin<typeof Product>;
-  public addProduct!: HasManyAddAssociationMixin<typeof Product, "id">;
+  public getProducts!: typeof Product[];
+  public addProduct!: (product: Product, options?: any) => Promise<void>;
 
-  public static associate(model: { Product: typeof Product }): void {
-    User.hasMany(model.Product, { foreignKey: "userId" })
+  public static associate(models: { Product: typeof Product }): void {
+    User.hasMany(models.Product, { foreignKey: "userId" });
+  };
+
+  constructor(values?: any, option?: any) {
+    super(values, { ...option, sequelize })
   }
 };
 
@@ -72,10 +74,10 @@ User.init({
 
 User.associate({ Product });
 
-User.sync({ force: true }).then(() => {
-  console.log("TAble created.");
-}).catch((err) => {
-  console.log(err.message);
-});
+// User.sync({ force: true }).then(() => {
+//   console.log("TAble created.");
+// }).catch((err) => {
+//   console.log(err.message);
+// });
 
 export default User;

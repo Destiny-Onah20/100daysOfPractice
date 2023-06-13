@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
+import log from "./utils/logger";
 
 import sequelize from "./config/config";
 import app from "./app";
@@ -8,11 +9,11 @@ import app from "./app";
 const port = process.env.PORT;
 
 sequelize.authenticate().then(() => {
-  console.log("Database connected");
+  log.info("Database connected");
 }).then(() => {
   app.listen(port, () => {
-    console.log(`Listening to port: ${port}`);
+    log.info(`Listening to port: ${port}`);
   })
 }).catch((err) => {
-  console.log(err.message)
+  log.info(err.message)
 });

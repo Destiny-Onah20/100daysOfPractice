@@ -5,15 +5,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
+const logger_1 = __importDefault(require("./utils/logger"));
 const config_1 = __importDefault(require("./config/config"));
 const app_1 = __importDefault(require("./app"));
 const port = process.env.PORT;
 config_1.default.authenticate().then(() => {
-    console.log("Database connected");
+    logger_1.default.info("Database connected");
 }).then(() => {
     app_1.default.listen(port, () => {
-        console.log(`Listening to port: ${port}`);
+        logger_1.default.info(`Listening to port: ${port}`);
     });
 }).catch((err) => {
-    console.log(err.message);
+    logger_1.default.info(err.message);
 });

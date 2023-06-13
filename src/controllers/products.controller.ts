@@ -4,7 +4,6 @@ import { productDataInterface } from '../interfaces/product.interface';
 import Product from '../models/products.model';
 import User from '../models/user.model';
 import fileUpload from 'express-fileupload';
-import { productInput } from '../schemas/product.schema';
 
 export const createProducts = async (req: Request, res: Response) => {
   try {
