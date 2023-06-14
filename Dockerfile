@@ -1,28 +1,18 @@
-FROM node:16 AS dist
+FROM node:16
 
-WORKDIR /app
+RUN mkdir /server
+
+WORKDIR /server
+
+ARG PORT
+ENV PORT $PORT
 
 COPY package*.json ./
 
 RUN npm install
 
-COPY . .
-
-RUN npm run dist
-
-FROM node:16
-
-WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install --production
-
-COPY --from=dist /app/dist ./dist
-
-ARG PORT
-ENV PORT $PORT
+COPY . ./
 
 EXPOSE $PORT
 
-CMD ["node", "./dist/server.js"]
+CMD ["npm", "start ./dist/server.js"]
