@@ -1,4 +1,4 @@
-FROM node:16 AS build
+FROM node:16 AS dist
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+RUN npm run dist
 
 FROM node:16
 
@@ -18,7 +18,7 @@ COPY package*.json ./
 
 RUN npm install --production
 
-COPY --from=build /app/dist ./dist
+COPY --from=dist /app/dist ./dist
 
 ARG PORT
 ENV PORT $PORT
