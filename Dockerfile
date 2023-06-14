@@ -15,4 +15,4 @@ COPY . ./
 
 EXPOSE $PORT
 
-CMD ["npm", "start ./dist/server.js"]
+CMD ["node", "./dist/server.js"]
