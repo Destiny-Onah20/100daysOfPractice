@@ -34,6 +34,7 @@
     "pino": "^8.14.1",
     "sequelize": "^6.31.1",
     "sequelize-typescript": "^2.1.5",
+    "winston": "^3.9.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {

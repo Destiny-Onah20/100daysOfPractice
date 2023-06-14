@@ -74,7 +74,7 @@ Product.init(
   }
 );
 
-Product.associate({ User });
+// Product.associate({ User });
 
 // Product.sync({ force: true }).then(() => {
 //   console.log("Table created.");
