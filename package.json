@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start:dist": "tsc -w",
-    "dev": "nodemon dist/server.js",
-    "build": "npx nodemon",
+    "build": "nodemon dist/server.js",
+    "dev": "npx nodemon",
     "start": "tsc -p ."
   },
   "keywords": [],
