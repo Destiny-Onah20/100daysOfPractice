@@ -21,7 +21,7 @@ class User extends Model<UserAttributes, UserCreationAttributes>{
   public addProduct!: (product: Product, options?: any) => Promise<void>;
 
   public static associate(models: { Product: typeof Product }): void {
-    User.hasMany(models.Product, { foreignKey: "userId" });
+    User.hasMany(models.Product, { foreignKey: "userId", as: "products" });
   };
 
   constructor(values?: any, option?: any) {
@@ -72,7 +72,7 @@ User.init({
   tableName: "users"
 });
 
-User.associate({ Product });
+// User.associate({ Product });
 
 // User.sync({ force: true }).then(() => {
 //   console.log("TAble created.");

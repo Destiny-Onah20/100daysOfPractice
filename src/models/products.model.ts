@@ -19,7 +19,7 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> {
   public getUser!: BelongsToGetAssociationMixin<User>;
 
   static associate(models: { User: typeof User }): void {
-    Product.belongsTo(models.User, { as: "products", foreignKey: "userId" });
+    Product.belongsTo(models.User, { as: "users", foreignKey: "userId" });
   }
 }
 

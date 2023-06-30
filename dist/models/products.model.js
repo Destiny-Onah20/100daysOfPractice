@@ -7,7 +7,7 @@ const sequelize_1 = require("sequelize");
 const config_1 = __importDefault(require("../config/config"));
 class Product extends sequelize_1.Model {
     static associate(models) {
-        Product.belongsTo(models.User, { as: "products", foreignKey: "userId" });
+        Product.belongsTo(models.User, { as: "users", foreignKey: "userId" });
     }
 }
 Product.init({

@@ -52,7 +52,7 @@ class mailSender {
                 text: Option.message
             };
             console.log(mailOption);
-            const result = yield this.transporter.sendMail(mailOption);
+            yield this.transporter.sendMail(mailOption);
         });
     }
     getTransporter() {

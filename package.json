@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start:dist": "tsc -w",
-    "start:run": "nodemon dist/server.js",
-    "start": "concurrently npm:start:*"
+    "dev": "nodemon dist/server.js",
+    "build": "npx nodemon",
+    "start": "tsc -p ."
   },
   "keywords": [],
   "author": "",
