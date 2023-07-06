@@ -16,30 +16,39 @@ exports.createProducts = void 0;
 const cloudinary_1 = __importDefault(require("../middlewares/cloudinary"));
 const products_model_1 = __importDefault(require("../models/products.model"));
 const user_model_1 = __importDefault(require("../models/user.model"));
+const uuid_1 = require("uuid");
 const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const userId = req.params.userid;
-        const theUser = yield user_model_1.default.findAll({ where: { id: userId } });
-        const { productName, description, price } = req.body;
+        const { productName, description, price, } = req.body;
         // console.log(req.files);
         if (!req.files) {
             throw new Error('No file uploaded');
         }
-        console.log(req.files.imageId);
         const files = req.files.imageId;
+        if (!files || files.length === 0) {
+            throw new Error('No file uploaded');
+        }
         const file = files[0];
-        const result = yield cloudinary_1.default.uploader.upload(file.tempFilePath);
-        const { secure_url: imageId, public_id: cloudId } = result;
+        const tempFileName = (0, uuid_1.v4)();
+        const tempFilePath = `tmp/${tempFileName}`;
+        const result = yield cloudinary_1.default.uploader.upload((_a = req.files) === null || _a === void 0 ? void 0 : _a.imageId.tempFilePath);
         const data = {
             productName,
             description,
             price,
-            imageId,
-            cloudId,
-            userId: theUser[0].id
+            imageId: result.secure_url,
+            cloudId: result.public_id,
         };
+        const theUser = yield user_model_1.default.findByPk(userId);
+        if (theUser) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
         const postProduct = yield products_model_1.default.create(data);
-        res.status(201).json({
+        return res.status(201).json({
             message: 'Product posted.',
             data: postProduct,
         });

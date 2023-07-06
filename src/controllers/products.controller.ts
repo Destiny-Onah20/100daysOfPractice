@@ -2,37 +2,56 @@ import { RequestHandler, Request, Response } from 'express';
 import Cloudinary from '../middlewares/cloudinary';
 import { productDataInterface } from '../interfaces/product.interface';
 import Product from '../models/products.model';
+import { UploadedFile } from 'express-fileupload';
 import User from '../models/user.model';
-import fileUpload from 'express-fileupload';
+import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs';
 
 export const createProducts = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userid;
-    const theUser = await User.findAll({ where: { id: userId } })
-    const { productName, description, price } = req.body;
+    const { productName, description, price, } = req.body;
     // console.log(req.files);
+
 
     if (!req.files) {
       throw new Error('No file uploaded');
     }
-    console.log(req.files.imageId);
-    const files = req.files.imageId as fileUpload.UploadedFile[];
-    const file = files[0]
-    const result = await Cloudinary.uploader.upload(file.tempFilePath)
-    const { secure_url: imageId, public_id: cloudId } = result;
 
+    const files = req.files.imageId as UploadedFile[];
+    if (!files || files.length === 0) {
+      throw new Error('No file uploaded');
+    }
+
+    const file = files[0] as UploadedFile;
+    const tempFileName = uuidv4();
+    const tempFilePath = `tmp/${tempFileName}`;
+
+
+    const result = await Cloudinary.uploader.upload(req.files?.imageId.tempFilePath);
+
+    type productDataInterface = {
+      productName: string;
+      description: string;
+      price: number;
+      imageId: string;
+      cloudId: string;
+    }
     const data: productDataInterface = {
       productName,
       description,
       price,
-      imageId,
-      cloudId,
-      userId: theUser[0].id
+      imageId: result.secure_url,
+      cloudId: result.public_id,
     };
-
+    const theUser = await User.findByPk(userId);
+    if (theUser) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
     const postProduct = await Product.create(data);
-
-    res.status(201).json({
+    return res.status(201).json({
       message: 'Product posted.',
       data: postProduct,
     });

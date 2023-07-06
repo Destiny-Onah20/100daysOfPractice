@@ -1,9 +1,20 @@
-import { Model, DataTypes, Optional, BelongsToGetAssociationMixin, Sequelize } from "sequelize";
-import sequelize from "../config/config";
-import { ProductAttributes } from "../interfaces/product.interface";
-import User from "./user.model";
+import { Optional, Model, DataTypes, BelongsToGetAssociationMixin } from 'sequelize';
+import sequelize from '../config/config';
+import User from './user.model';
 
-type ProductCreationAttributes = Optional<ProductAttributes, "id" | "createdAt" | "updatedAt">;
+interface ProductAttributes {
+  id: number;
+  productName: string;
+  description: string;
+  price: number;
+  imageId: string;
+  cloudId: string;
+  userId: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+type ProductCreationAttributes = Optional<ProductAttributes, 'id' | 'createdAt' | 'updatedAt' | "userId">;
 
 class Product extends Model<ProductAttributes, ProductCreationAttributes> {
   public id!: number;
@@ -18,16 +29,15 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> {
 
   public getUser!: BelongsToGetAssociationMixin<User>;
 
-  static associate(models: { User: typeof User }): void {
-    Product.belongsTo(models.User, { as: "users", foreignKey: "userId" });
+  public static associate(models: any): void {
+    Product.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
   }
 }
 
 Product.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
@@ -55,31 +65,32 @@ Product.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "users",
-        key: "id",
+        model: 'users',
+        key: 'id',
       },
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: false,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: false,
     },
   },
   {
     sequelize,
-    tableName: "products",
+    tableName: 'products',
   }
 );
 
-// Product.associate({ User });
 
-// Product.sync({ force: true }).then(() => {
-//   console.log("Table created.");
-// }).catch((err) => {
-//   console.log(err.message);
-// })
+
+Product.belongsTo(User, { foreignKey: "userId" })
+User.hasMany(Product, { foreignKey: "userId" })
+
+Product.sync().then(() => {
+  console.log("Table created.");
+}).catch((err) => {
+  console.log(err.message);
+})
 
 export default Product;

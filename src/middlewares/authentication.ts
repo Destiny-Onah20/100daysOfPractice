@@ -56,7 +56,7 @@ export const authAccess: RequestHandler = async (req, res, next) => {
       Jwt.verify(authToken, "process.env.TOKEN_SEC", (error, payLoad) => {
         if (error) {
           res.status(401).json({
-            message: "You not authorized."
+            message: error.message
           })
         } else {
           res.locals.jwt = payLoad;

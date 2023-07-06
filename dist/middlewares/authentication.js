@@ -69,7 +69,7 @@ const authAccess = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             jsonwebtoken_1.default.verify(authToken, "process.env.TOKEN_SEC", (error, payLoad) => {
                 if (error) {
                     res.status(401).json({
-                        message: "You not authorized."
+                        message: error.message
                     });
                 }
                 else {

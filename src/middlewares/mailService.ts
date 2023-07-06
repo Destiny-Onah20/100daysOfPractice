@@ -39,7 +39,7 @@ export default class mailSender {
       subject: Option.subject,
       text: Option.message
     }
-    console.log(mailOption);
+    // console.log(mailOption);
     await this.transporter.sendMail(mailOption);
 
   }

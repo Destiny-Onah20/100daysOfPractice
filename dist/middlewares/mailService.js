@@ -51,7 +51,7 @@ class mailSender {
                 subject: Option.subject,
                 text: Option.message
             };
-            console.log(mailOption);
+            // console.log(mailOption);
             yield this.transporter.sendMail(mailOption);
         });
     }

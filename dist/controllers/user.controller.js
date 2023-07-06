@@ -29,7 +29,7 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 message: "Email already Exists"
             });
         }
-        console.log("hello");
+        // console.log("hello");
         const saltedPassword = yield bcrypt_1.default.genSalt(10);
         const hashedPassword = yield bcrypt_1.default.hash(password, saltedPassword);
         const data = {

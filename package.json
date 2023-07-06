@@ -5,9 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start:dist": "tsc -w",
-    "build": "nodemon dist/server.js",
-    "dev": "npx nodemon",
-    "start": "tsc -p ."
+    "start:run": "nodemon dist/server.js",
+    "start": "concurrently npm:start:*"
   },
   "keywords": [],
   "author": "",
@@ -35,11 +34,13 @@
     "pino": "^8.14.1",
     "sequelize": "^6.31.1",
     "sequelize-typescript": "^2.1.5",
+    "uuid": "^9.0.0",
     "winston": "^3.9.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/nodemailer": "^6.4.8",
+    "@types/uuid": "^9.0.2",
     "nodemon": "^2.0.22",
     "pino-pretty": "^10.0.0",
     "typescript": "^5.1.6"

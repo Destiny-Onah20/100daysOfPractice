@@ -7,60 +7,55 @@ const sequelize_1 = require("sequelize");
 const config_1 = __importDefault(require("../config/config"));
 class User extends sequelize_1.Model {
     static associate(models) {
-        User.hasMany(models.Product, { foreignKey: "userId", as: "products" });
-    }
-    ;
-    constructor(values, option) {
-        super(values, Object.assign(Object.assign({}, option), { sequelize: config_1.default }));
+        User.hasMany(models.Product, { foreignKey: 'userId', as: 'products' });
     }
 }
-;
 User.init({
     id: {
-        type: sequelize_1.DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
+        type: sequelize_1.DataTypes.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
     },
     name: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     email: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
     },
     status: {
         type: sequelize_1.DataTypes.BOOLEAN,
-        defaultValue: true
+        defaultValue: true,
     },
     token: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     age: {
         type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
     },
     password: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     createdAt: {
-        type: sequelize_1.DataTypes.DATE
+        type: sequelize_1.DataTypes.DATE,
     },
     updatedAt: {
-        type: sequelize_1.DataTypes.DATE
-    }
+        type: sequelize_1.DataTypes.DATE,
+    },
 }, {
     sequelize: config_1.default,
-    tableName: "users"
+    tableName: 'users',
 });
-// User.associate({ Product });
-// User.sync({ force: true }).then(() => {
-//   console.log("TAble created.");
-// }).catch((err) => {
-//   console.log(err.message);
-// });
+User.sync()
+    .then(() => {
+    console.log('Table created.');
+})
+    .catch((err) => {
+    console.log(err.message);
+});
 exports.default = User;
