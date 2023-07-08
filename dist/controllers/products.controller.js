@@ -16,42 +16,42 @@ exports.createProducts = void 0;
 const cloudinary_1 = __importDefault(require("../middlewares/cloudinary"));
 const products_model_1 = __importDefault(require("../models/products.model"));
 const user_model_1 = __importDefault(require("../models/user.model"));
-const uuid_1 = require("uuid");
 const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        const userId = req.params.userid;
+        const userId = req.params.userId;
+        console.log(userId);
         const { productName, description, price, } = req.body;
-        // console.log(req.files);
+        const validUser = yield user_model_1.default.findOne({ where: { id: userId } });
+        if (!validUser) {
+            return res.status(404).json({
+                message: 'User not found!'
+            });
+        }
         if (!req.files) {
             throw new Error('No file uploaded');
         }
-        const files = req.files.imageId;
-        if (!files || files.length === 0) {
+        const file = (_a = req.files) === null || _a === void 0 ? void 0 : _a.imageId;
+        if (!file || file.length === 0) {
             throw new Error('No file uploaded');
         }
-        const file = files[0];
-        const tempFileName = (0, uuid_1.v4)();
-        const tempFilePath = `tmp/${tempFileName}`;
-        const result = yield cloudinary_1.default.uploader.upload((_a = req.files) === null || _a === void 0 ? void 0 : _a.imageId.tempFilePath);
-        const data = {
-            productName,
-            description,
-            price,
-            imageId: result.secure_url,
-            cloudId: result.public_id,
-        };
-        const theUser = yield user_model_1.default.findByPk(userId);
-        if (theUser) {
-            return res.status(404).json({
-                message: "User not found",
+        const uploads = Array.isArray(file) ? file : [file];
+        for (const file of uploads) {
+            const result = yield cloudinary_1.default.uploader.upload(file.tempFilePath);
+            const data = {
+                productName,
+                description,
+                price,
+                imageId: result.secure_url,
+                cloudId: result.public_id,
+                userId: Number(userId)
+            };
+            const postProduct = yield products_model_1.default.create(data);
+            return res.status(201).json({
+                message: 'Product posted.',
+                data: postProduct,
             });
         }
-        const postProduct = yield products_model_1.default.create(data);
-        return res.status(201).json({
-            message: 'Product posted.',
-            data: postProduct,
-        });
     }
     catch (error) {
         return res.status(500).json({

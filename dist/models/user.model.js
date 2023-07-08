@@ -51,11 +51,11 @@ User.init({
     sequelize: config_1.default,
     tableName: 'users',
 });
-User.sync()
-    .then(() => {
-    console.log('Table created.');
-})
-    .catch((err) => {
-    console.log(err.message);
-});
+// User.sync()
+//   .then(() => {
+//     console.log('Table created.');
+//   })
+//   .catch((err) => {
+//     console.log(err.message);
+//   });
 exports.default = User;

@@ -69,12 +69,12 @@ User.init(
   }
 );
 
-User.sync()
-  .then(() => {
-    console.log('Table created.');
-  })
-  .catch((err) => {
-    console.log(err.message);
-  });
+// User.sync()
+//   .then(() => {
+//     console.log('Table created.');
+//   })
+//   .catch((err) => {
+//     console.log(err.message);
+//   });
 
 export default User;

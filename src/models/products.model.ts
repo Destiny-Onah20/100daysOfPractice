@@ -87,10 +87,10 @@ Product.init(
 Product.belongsTo(User, { foreignKey: "userId" })
 User.hasMany(Product, { foreignKey: "userId" })
 
-Product.sync().then(() => {
-  console.log("Table created.");
-}).catch((err) => {
-  console.log(err.message);
-})
+// Product.sync().then(() => {
+//   console.log("Table created.");
+// }).catch((err) => {
+//   console.log(err.message);
+// })
 
 export default Product;

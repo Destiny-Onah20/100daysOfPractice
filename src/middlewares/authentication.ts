@@ -41,13 +41,13 @@ dotenv.config();
 export const authAccess: RequestHandler = async (req, res, next) => {
   try {
     const userId = req.params.userId;
-    const findUser = await User.findAll({ where: { id: userId } });
+    const findUser = await User.findOne({ where: { id: userId } });
     if (!findUser) {
       return res.status(409).json({
         message: "Not authorized."
       })
     };
-    const authToken = findUser[0].token;
+    const authToken = findUser.token;
     if (!authToken) {
       return res.status(401).json({
         message: "Not authorized."

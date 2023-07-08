@@ -52,14 +52,14 @@ dotenv_1.default.config();
 const authAccess = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
-        const findUser = yield user_model_1.default.findAll({ where: { id: userId } });
+        const findUser = yield user_model_1.default.findOne({ where: { id: userId } });
         if (!findUser) {
             return res.status(409).json({
                 message: "Not authorized."
             });
         }
         ;
-        const authToken = findUser[0].token;
+        const authToken = findUser.token;
         if (!authToken) {
             return res.status(401).json({
                 message: "Not authorized."
