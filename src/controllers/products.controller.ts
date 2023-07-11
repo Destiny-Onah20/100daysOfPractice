@@ -1,12 +1,10 @@
 import { RequestHandler, Request, Response } from 'express';
-import Cloudinary from '../middlewares/cloudinary';
-import { productDataInterface } from '../interfaces/product.interface';
 import Product from '../models/products.model';
 import { UploadedFile } from 'express-fileupload';
 import User from '../models/user.model';
 import * as admin from "firebase-admin";
 import { ServiceAccount, firestore, storage, initializeApp } from "firebase-admin";
-import { serviceAccount, firebaseConfig } from '../utils/firebase';
+import { serviceAccount } from '../utils/firebase';
 
 
 export const createProducts = async (req: Request, res: Response) => {
@@ -79,5 +77,25 @@ export const createProducts = async (req: Request, res: Response) => {
     return res.status(500).json({
       message: error.message,
     });
+  }
+};
+
+export const allProducts: RequestHandler = async (req, res) => {
+  try {
+    const products = await Product.findAll();
+    if (products.length === 0) {
+      return res.status(404).json({
+        message: "Sorry no products for now!"
+      })
+    } else {
+      return res.status(200).json({
+        message: "All products " + products.length,
+        data: products
+      })
+    }
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message
+    })
   }
 };

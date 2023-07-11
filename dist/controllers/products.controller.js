@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createProducts = void 0;
+exports.allProducts = exports.createProducts = void 0;
 const products_model_1 = __importDefault(require("../models/products.model"));
 const user_model_1 = __importDefault(require("../models/user.model"));
 const admin = __importStar(require("firebase-admin"));
@@ -105,3 +105,25 @@ const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.createProducts = createProducts;
+const allProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const products = yield products_model_1.default.findAll();
+        if (products.length === 0) {
+            return res.status(404).json({
+                message: "Sorry no products for now!"
+            });
+        }
+        else {
+            return res.status(200).json({
+                message: "All products " + products.length,
+                data: products
+            });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+});
+exports.allProducts = allProducts;
